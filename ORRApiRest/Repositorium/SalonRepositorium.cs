@@ -42,9 +42,12 @@ namespace ORRApiRest.Repositorium
         public static Salon CreateSalonFromDTO(SalonDTO salonDTO)
         {
             nextSalonId++;
-            Salon newSalon = new Salon();
-            newSalon.Name = salonDTO.Name;
-            newSalon.Id = nextSalonId;
+            Salon newSalon = new Salon()
+            {
+                Name = salonDTO.Name,
+                Id = nextSalonId
+            };
+            
             salonList.Add(newSalon);
             return newSalon;
         }
@@ -64,15 +67,12 @@ namespace ORRApiRest.Repositorium
         public static Salon DeleteById(int id)
         {
             Salon salonToDelete = FindSalonById(id);
-            if (salonToDelete != null)
+            if (salonToDelete == null)
             {
-                salonList.Remove(salonToDelete);
-                return salonToDelete;
+                throw new Exception("Cannot costam");
             }
-            else
-            {
-                return null;
-            }
+            salonList.Remove(salonToDelete);
+            return salonToDelete;
         }
 
         public static List<Salon> DeleteAll()

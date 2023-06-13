@@ -10,7 +10,7 @@
             return carList;
         }
 
-        public static Car FindCarById(int id)
+        public static Car? FindCarById(int id)
         {
             return carList.Find(car => car.Id == id);
         }
@@ -18,12 +18,14 @@
         public static Car CreateCarFromDTO(CarDTO car)
         {
             nextCarId++;
-            Car newCar = new Car();
-            newCar.MakeYear = car.MakeYear;
-            newCar.Model = car.Model;
-            newCar.Mileage = car.Mileage;
-            newCar.SalonId = car.SalonId;
-            newCar.Id = nextCarId;
+            var newCar = new Car()
+            {
+                MakeYear = car.MakeYear,
+                Model = car.Model,
+                Mileage = car.Mileage,
+                SalonId = car.SalonId,
+                Id = nextCarId
+            };
             carList.Add(newCar);
             return newCar;
         }
