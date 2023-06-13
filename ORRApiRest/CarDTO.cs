@@ -7,6 +7,7 @@
         public int MakeYear { get; set; }
 
         public float Mileage { get; set; }
+        public int SalonId { get; set; }
 
     }
 }

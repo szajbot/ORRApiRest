@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ORRApiRest.Services;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.Xml;
 using System.Xml.Linq;
@@ -6,104 +7,32 @@ using System.Xml.Linq;
 
 namespace ORRApiRest.Controllers
 {
-    [Route("api")]
+    [Route("api/cars")]
     [ApiController]
     public class CarsController : ControllerBase
     {
-
-        private static List<Car> carList = new List<Car>();
-        private static int carCount = 0;
+        private CarService carService = new CarService();
 
         [HttpGet]
-        [Route("cars")]
-        public IEnumerable<Car> GetAll() => carList.ToArray();
-
-
-        [HttpGet("car/{id}")]
-        public IEnumerable<Car> Get(int id)
-        {
-
-            Car carToFind = carList.Find(car => car.Id == id);
-            if (carToFind != null)
-            {
-                yield return carToFind;
-            }
-            else
-            {
-                Console.WriteLine($"Car with ID {id} does not exist.");
-            }
-        }
+        public List<Car> ReadAll() => carService.GetAllCars();
+        
+        [HttpGet]
+        [Route("{id}")]
+        public Car Read(int id) => carService.GetCarById(id);
 
         [HttpPost]
-        [Route("car")]
-        public IEnumerable<Car> Put([FromBody] CarDTO car)
-        {
-            carCount++;
-            Car newCar = new Car();
-            newCar.MakeYear = car.MakeYear;
-            newCar.Model = car.Model;
-            newCar.Mileage = car.Mileage;
-            newCar.Id = carCount;
-            carList.Add(newCar);
-            yield return newCar;
-        }
+        public Car Create([FromBody] CarDTO car) => carService.CreateCarFromDTO(car);
 
-        [HttpPut("car/{id}")]
-        public IEnumerable<Car> Update(int id, [FromBody] CarDTO car)
-        {
-            Car carToFind = carList.Find(car => car.Id == id);
-            if (carToFind != null)
-            {
-                carToFind.MakeYear = car.MakeYear;
-                carToFind.Model = car.Model;
-                carToFind.Mileage = car.Mileage;
-                yield return carToFind;
-            }
-            else
-            {
-                Console.WriteLine($"Car with ID {id} does not exist.");
-            }
-        }
+        [HttpPut("{id}")]
+        public Car UpdateCar(int id, [FromBody] CarDTO car) => carService.UpdateCarByIdFromDto(id, car);
 
-        [HttpPatch("car/{id}")]
-        public IEnumerable<Car> PatchMileage(int id, float mileage)
-        {
-            Car carToFind = carList.Find(car => car.Id == id);
-            if (carToFind != null)
-            {
-                carToFind.Mileage = mileage;
-                yield return carToFind;
-            }
-            else
-            {
-                Console.WriteLine($"Car with ID {id} does not exist.");
-            }
-        }
+        [HttpPatch("{id}")]
+        public Car UpdateMileage(int id, float mileage) => carService.PatchCarMileage(id, mileage);
 
-        [HttpDelete("car/{id}")]
-        public IEnumerable<Car> DeleteOne(int id)
-        {
+        [HttpDelete("{id}")]
+        public Car Delete(int id) => carService.DeleteById(id);
 
-            Car carToFind = carList.Find(car => car.Id == id);
-            if (carToFind != null)
-            {
-                carList.Remove(carToFind);
-                yield return carToFind;
-            }
-            else
-            {
-                Console.WriteLine($"Car with ID {id} does not exist.");
-            }
-        }
-
-        [HttpDelete("cars")]
-        public IEnumerable<Car> DeleteAll()
-        {
-            List<Car> removedCars = new List<Car>();
-            removedCars.AddRange(carList);
-            carList.Clear();
-            return removedCars.ToArray();
-        }
-
+        [HttpDelete]
+        public List<Car> DeleteAll() => carService.DeleteAll();
     }
 }
