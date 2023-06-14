@@ -24,12 +24,12 @@ namespace ORRApiRest.Services
             }
         }
 
-        public Car CreateCarFromDTO(CarDTO car)
+        public Car CreateCar(Car car)
         {
-            return CarRepositorium.CreateCarFromDTO(car);
+            return CarRepositorium.CreateCar(car);
         }
 
-        public Car UpdateCarByIdFromDto(int id, CarDTO car)
+        public Car UpdateCarById(int id, Car car)
         {
             Car carToUpdate = CarRepositorium.FindCarById(id); 
             if (carToUpdate != null)

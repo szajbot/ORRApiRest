@@ -15,7 +15,7 @@
             return carList.Find(car => car.Id == id);
         }
 
-        public static Car CreateCarFromDTO(CarDTO car)
+        public static Car CreateCar(Car car)
         {
             nextCarId++;
             var newCar = new Car()
@@ -30,7 +30,7 @@
             return newCar;
         }
 
-        public static Car UpdateCar(Car carToUpdate, CarDTO car)
+        public static Car UpdateCar(Car carToUpdate, Car car)
         {
             carToUpdate.Mileage = car.Mileage;
             carToUpdate.Model = car.Model;
@@ -48,14 +48,12 @@
         public static Car DeleteById(int id)
         {
             Car carToDelete = FindCarById(id);
-            if (carToDelete != null)
+            if (carToDelete == null)
             {
-                carList.Remove(carToDelete);
-                return carToDelete;
-            } else 
-            {
-                return null;
+                throw new Exception($"Car with ID {id} does not exist.");
             }
+            carList.Remove(carToDelete);
+            return carToDelete;
         }
 
         public static List<Car> DeleteAll()

@@ -7,30 +7,42 @@ namespace ORRApiRest.Repositorium
         private static List<Salon> salonList = new List<Salon>();
         private static int nextSalonId = 0;
 
-        public static List<SalonWithCars> GetAll()
+        public static List<Salon> GetAll()
         {
             List<Car> cars = CarRepositorium.GetAll();
 
-            List<SalonWithCars> salonWithCarsList = new List<SalonWithCars>();
+            List<Salon> salonWithCarsList = new List<Salon>();
 
             foreach (Salon salon in salonList)
             {
                 List<Car> salonCars = cars.Where(car => car.SalonId == salon.Id).ToList();
-                SalonWithCars salonWithCars = new SalonWithCars(salon.Id, salon.Name, salonCars); // Assuming SalonWithCars is a custom class to hold salon and car list
+                Salon salonWithCars = new Salon
+                {
+                    Id = salon.Id,
+                    Name = salon.Name,
+                    CarList = salonCars,
+
+                };
                 salonWithCarsList.Add(salonWithCars);
             }
 
             return salonWithCarsList;
         }
 
-        public static SalonWithCars FindSalonWithCarsById(int id)
+        public static Salon FindSalonWithCarsById(int id)
         {
             List<Car> cars = CarRepositorium.GetAll();
 
             Salon salon = salonList.Find(salon => salon.Id == id);
             List<Car> salonCars = cars.Where(car => car.SalonId == salon.Id).ToList();
 
-            SalonWithCars salonWithCars = new SalonWithCars(id, salon.Name, salonCars);
+            Salon salonWithCars = new Salon
+            {
+                Id = id,
+                Name = salon.Name,
+                CarList = salonCars,
+
+            };
             return salonWithCars;
         }
 
@@ -39,26 +51,27 @@ namespace ORRApiRest.Repositorium
             return salonList.Find(salon => salon.Id == id);
         }
 
-        public static Salon CreateSalonFromDTO(SalonDTO salonDTO)
+        public static Salon CreateSalon(Salon salon)
         {
             nextSalonId++;
-            Salon newSalon = new Salon()
+            var newSalon = new Salon()
             {
-                Name = salonDTO.Name,
-                Id = nextSalonId
+                Id = nextSalonId,
+                Name = salon.Name,
+                CarList = new List<Car>()
             };
             
             salonList.Add(newSalon);
             return newSalon;
         }
 
-        public static SalonWithCars UpdateSalon(SalonWithCars salonToUpdate, SalonDTO salon)
+        public static Salon UpdateSalon(Salon salonToUpdate, Salon salon)
         {
             salonToUpdate.Name = salon.Name;
             return salonToUpdate;
         }
 
-        public static SalonWithCars UpdateSalonName(SalonWithCars salonToUpdate, string name)
+        public static Salon UpdateSalonName(Salon salonToUpdate, string name)
         {
             salonToUpdate.Name = name;
             return salonToUpdate;
@@ -69,7 +82,7 @@ namespace ORRApiRest.Repositorium
             Salon salonToDelete = FindSalonById(id);
             if (salonToDelete == null)
             {
-                throw new Exception("Cannot costam");
+                throw new Exception($"Salon with ID {id} does not exist.");
             }
             salonList.Remove(salonToDelete);
             return salonToDelete;

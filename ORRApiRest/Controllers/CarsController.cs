@@ -21,10 +21,10 @@ namespace ORRApiRest.Controllers
         public Car Read(int id) => carService.GetCarById(id);
 
         [HttpPost]
-        public Car Create([FromBody] CarDTO car) => carService.CreateCarFromDTO(car);
+        public Car Create([FromBody] Car car) => carService.CreateCar(car);
 
         [HttpPut("{id}")]
-        public Car UpdateCar(int id, [FromBody] CarDTO car) => carService.UpdateCarByIdFromDto(id, car);
+        public Car UpdateCar(int id, [FromBody] Car car) => carService.UpdateCarById(id, car);
 
         [HttpPatch("{id}")]
         public Car UpdateMileage(int id, float mileage) => carService.PatchCarMileage(id, mileage);

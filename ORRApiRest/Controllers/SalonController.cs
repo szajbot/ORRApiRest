@@ -10,21 +10,21 @@ namespace ORRApiRest.Controllers
         private salonService salonService = new salonService();
 
         [HttpGet]
-        public List<SalonWithCars> ReadAll() => salonService.GetAllSalons();
+        public List<Salon> ReadAll() => salonService.GetAllSalons();
 
         [HttpGet]
         [Route("{id}")]
-        public SalonWithCars Read(int id) => salonService.GetSalonById(id);
+        public Salon Read(int id) => salonService.GetSalonById(id);
         
         [HttpPost]
-        public Salon Create([FromBody] SalonDTO salonDTO) => salonService.CreateSalonFromDTO(salonDTO);
+        public Salon Create([FromBody] Salon salon) => salonService.CreateSalon(salon);
         
         [HttpPut("{id}")]
-        public SalonWithCars UpdateSalon(int id, [FromBody] SalonDTO salonDTO) => salonService.UpdateSalonByIdFromDto(id, salonDTO);
+        public Salon UpdateSalon(int id, [FromBody] Salon salon) => salonService.UpdateSalonById(id, salon);
 
         
         [HttpPatch("{id}")]
-        public SalonWithCars UpdateName(int id, string name) => salonService.PatchSalonName(id, name);
+        public Salon UpdateName(int id, string name) => salonService.PatchSalonName(id, name);
         
         
         [HttpDelete("{id}")]

@@ -5,14 +5,14 @@ namespace ORRApiRest.Services
 {
     public class salonService : ServiceBase
     {
-        public List<SalonWithCars> GetAllSalons()
+        public List<Salon> GetAllSalons()
         {
             return SalonRepositorium.GetAll();
         }
 
-        public SalonWithCars GetSalonById(int id)
+        public Salon GetSalonById(int id)
         {
-            SalonWithCars salonToFind = SalonRepositorium.FindSalonWithCarsById(id);
+            Salon salonToFind = SalonRepositorium.FindSalonWithCarsById(id);
             if (salonToFind != null)
             {
                 return salonToFind;
@@ -23,26 +23,26 @@ namespace ORRApiRest.Services
             }
         }
 
-        public Salon CreateSalonFromDTO(SalonDTO salonDTO)
+        public Salon CreateSalon(Salon salon)
         {
-            return SalonRepositorium.CreateSalonFromDTO(salonDTO);
+            return SalonRepositorium.CreateSalon(salon);
         }
 
-        public SalonWithCars UpdateSalonByIdFromDto(int id, SalonDTO salonDTO)
+        public Salon UpdateSalonById(int id, Salon salon)
         {
-            SalonWithCars salonToUpdate = SalonRepositorium.FindSalonWithCarsById(id);
+            Salon salonToUpdate = SalonRepositorium.FindSalonWithCarsById(id);
             if (salonToUpdate != null)
             {
-                return SalonRepositorium.UpdateSalon(salonToUpdate, salonDTO);
+                return SalonRepositorium.UpdateSalon(salonToUpdate, salon);
             }
             else
             {
                 throw new Exception($"Salon with ID {id} does not exist.");
             }
         }
-        public SalonWithCars PatchSalonName(int id, string name)
+        public Salon PatchSalonName(int id, string name)
         {
-            SalonWithCars salonToUpdate = SalonRepositorium.FindSalonWithCarsById(id);
+            Salon salonToUpdate = SalonRepositorium.FindSalonWithCarsById(id);
             if (salonToUpdate != null)
             {
                 return SalonRepositorium.UpdateSalonName(salonToUpdate, name);
